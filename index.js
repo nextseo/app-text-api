@@ -10,6 +10,10 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
+app.get('/',(rea,res)=>{
+  res.send('test API V.1')
+})
+
 
 app.post("/api/check_text", (req, res) => {
 const {text} = req.body
