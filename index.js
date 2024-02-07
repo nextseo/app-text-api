@@ -25,60 +25,101 @@ app.get("/", (rea, res) => {
   res.send("test API V.1");
 });
 
-app.post("/api/check_text", (req, res) => {
+// POST คำผิด
+app.post("/api/check_text", async (req, res) => {
+try {
+
   const { text } = req.body;
-  // console.log(req.body);
 
-  fs.writeFile("text.txt", text, { encoding: "utf-8" }, (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("เกิดข้อผิดพลาดในการเขียนไฟล์");
-    } else {
-      console.log("บันทึกข้อมูลไปยัง text.txt เรียบร้อยแล้ว");
+  if (text) {
+    // delete ข้อมูลก่อนหน้า
+    const sqlDelete = `DELETE FROM input_text`;
+    const [resultDelete] = await pool.query(sqlDelete);
 
-      // เรียกใช้ไฟล์ Python spellcheck
-      exec("python spellcheck2.py", (error, stdout, stderr) => {
-        if (error) {
-          console.error(`เกิดข้อผิดพลาด: ${error}`);
-          return;
-        }
-        console.log(`ผลลัพธ์: ${stdout}`);
-      });
-
-      res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+    if (resultDelete) {
+      const sql = `INSERT INTO input_text (text) VALUES (?)`;
+      await pool.query(sql, [text]);
+      res.status(200).json({ message: "ทำรายการสำเร็จ" });
     }
-  });
+  }else {
+    throw new Error('กรุณากรอกข้อความ')
+  }
+  
+} catch (error) {
+  console.log(error);
+  res.status(500).json(error.message)
+
+}
+
+
+
+  // fs.writeFile("text.txt", text, { encoding: "utf-8" }, (err) => {
+  //   if (err) {
+  //     console.error(err);
+  //     res.status(500).send("เกิดข้อผิดพลาดในการเขียนไฟล์");
+  //   } else {
+  //     console.log("บันทึกข้อมูลไปยัง text.txt เรียบร้อยแล้ว");
+
+  //     // เรียกใช้ไฟล์ Python spellcheck
+  //     exec("python spellcheck2.py", (error, stdout, stderr) => {
+  //       if (error) {
+  //         console.error(`เกิดข้อผิดพลาด: ${error}`);
+  //         return;
+  //       }
+  //       console.log(`ผลลัพธ์: ${stdout}`);
+  //     });
+
+  //     res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+  //   }
+  // });
+ 
 });
 
-// คำต้องห้าม
-app.post('/api/find_word', async(req,res)=> {
+// POST คำต้องห้าม
+app.post("/api/find_word", async (req, res) => {
   try {
     const { text } = req.body;
 
-    fs.writeFile("text.txt", text, { encoding: "utf-8" }, (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("เกิดข้อผิดพลาดในการเขียนไฟล์");
-      } else {
-        console.log("บันทึกข้อมูลไปยัง text.txt เรียบร้อยแล้ว");
-  
-        // เรียกใช้ไฟล์ Python 
-        exec("python findword.py", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`เกิดข้อผิดพลาด: ${error}`);
-            return;
-          }
-          console.log(`ผลลัพธ์: ${stdout}`);
-        });
-  
-        res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-      }
-    });
+    
+  if (text) {
+    // delete ข้อมูลก่อนหน้า
+    const sqlDelete = `DELETE FROM input_text`;
+    const [resultDelete] = await pool.query(sqlDelete);
 
+    if (resultDelete) {
+      const sql = `INSERT INTO input_text (text) VALUES (?)`;
+      await pool.query(sql, [text]);
+      res.status(200).json({ message: "ทำรายการสำเร็จ" });
+    }
+  }else {
+    throw new Error('กรุณากรอกข้อความ')
+  }
+
+
+    // fs.writeFile("text.txt", text, { encoding: "utf-8" }, (err) => {
+    //   if (err) {
+    //     console.error(err);
+    //     res.status(500).send("เกิดข้อผิดพลาดในการเขียนไฟล์");
+    //   } else {
+    //     console.log("บันทึกข้อมูลไปยัง text.txt เรียบร้อยแล้ว");
+
+    //     // เรียกใช้ไฟล์ Python
+    //     exec("python findword.py", (error, stdout, stderr) => {
+    //       if (error) {
+    //         console.error(`เกิดข้อผิดพลาด: ${error}`);
+    //         return;
+    //       }
+    //       console.log(`ผลลัพธ์: ${stdout}`);
+    //     });
+
+    //     res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+    //   }
+    // });
   } catch (error) {
     console.log(error);
+    res.status(500).json(error.message)
   }
-})
+});
 
 // GET ALL คำผิด
 app.get("/api/text_wrong", async (req, res) => {
