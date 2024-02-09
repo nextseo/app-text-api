@@ -1,4 +1,3 @@
-
 from pythainlp import word_tokenize
 import mysql.connector
 import sys
@@ -8,9 +7,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 #####################
 mydb = mysql.connector.connect(
     host="nextsoftwarethailand.com",
-    user="nextsoft_dev_01", 
+    user="nextsoft_app_text", 
     passwd="nextsoft1234",
-    database="nextsoft_dev_01",
+    database="nextsoft_app_text",
     allow_local_infile=True,
     port = 3306
     )
@@ -272,13 +271,30 @@ stopwordgroup = ['อ้วน',
     'คืนความเห็นสาว',
     'ฆ่าเชื้อ',
     'เห็นผล']
-
+'''
 with open('text.txt',encoding="utf8") as f:
     lines = f.readlines()
     #print('lineslines',len(lines[0]))
     #print('linesss',lines)
     #print('lines',lines[0][0:5])
-mytext = lines[0]
+'''
+#####################
+
+sql_select_Query = "select * from input_text"
+cursor = mydb.cursor()
+cursor.execute(sql_select_Query)
+# get all records
+records = cursor.fetchall()
+# print("Total number of rows in table: ", cursor.rowcount)
+# print("\nPrinting each row")
+for row in records:
+    thai_text = row[1] #set notification
+    
+print('thai_text',thai_text)
+    
+#####################
+
+mytext = thai_text
 for xstop in range(0,len(stopwordgroup)):
         startword = mytext.find(stopwordgroup[xstop])
         if startword>=1:
@@ -290,9 +306,9 @@ for xstop in range(0,len(stopwordgroup)):
             #####################
             mydb = mysql.connector.connect(
                 host="nextsoftwarethailand.com",
-                user="nextsoft_dev_01", 
+                user="nextsoft_app_text", 
                 passwd="nextsoft1234",
-                database="nextsoft_dev_01",
+                database="nextsoft_app_text",
                 allow_local_infile=True,
                 port = 3306
                 )
