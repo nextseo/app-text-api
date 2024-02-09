@@ -37,9 +37,9 @@ app.post("/api/check_text", async (req, res) => {
 
       
         // DELETE TABLE propfthai
-        await pool.query('DELETE FROM propfthai')
+      const [resultDelete_2] =   await pool.query('DELETE FROM propfthai')
 
-      if (resultDelete) {
+      if (resultDelete_2) {
         const sql = `INSERT INTO input_text (text) VALUES (?)`;
         await pool.query(sql, [text]);
         res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
@@ -77,9 +77,9 @@ app.post("/api/find_word", async (req, res) => {
 
       
         // DELETE TABLE proofstopword
-        await pool.query('DELETE FROM proofstopword')
+        const [resultDelete_2] =   await pool.query('DELETE FROM proofstopword')
 
-      if (resultDelete) {
+      if (resultDelete_2) {
         const sql = `INSERT INTO input_text (text) VALUES (?)`;
         await pool.query(sql, [text]);
         res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
