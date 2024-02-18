@@ -35,15 +35,12 @@ app.post("/api/check_text", async (req, res) => {
       const sqlDelete = `DELETE FROM input_text`;
       const [resultDelete] = await pool.query(sqlDelete);
 
-      
-        // DELETE TABLE propfthai
-      const [resultDelete_2] =   await pool.query('DELETE FROM propfthai')
+      // DELETE TABLE propfthai
+      const [resultDelete_2] = await pool.query("DELETE FROM propfthai");
 
       if (resultDelete_2) {
         const sql = `INSERT INTO input_text (text) VALUES (?)`;
         await pool.query(sql, [text]);
-        res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-
 
         // เรียกใช้ไฟล์ Python spellcheck
         exec("python spellcheck2.py", (error, stdout, stderr) => {
@@ -52,9 +49,10 @@ app.post("/api/check_text", async (req, res) => {
             return;
           }
           console.log(`ผลลัพธ์: ${stdout}`);
-
+          if (stdout) {
+            res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+          }
         });
-
       }
     } else {
       throw new Error("กรุณากรอกข้อความ");
@@ -75,15 +73,12 @@ app.post("/api/find_word", async (req, res) => {
       const sqlDelete = `DELETE FROM input_text`;
       const [resultDelete] = await pool.query(sqlDelete);
 
-      
-        // DELETE TABLE proofstopword
-        const [resultDelete_2] =   await pool.query('DELETE FROM proofstopword')
+      // DELETE TABLE proofstopword
+      const [resultDelete_2] = await pool.query("DELETE FROM proofstopword");
 
       if (resultDelete_2) {
         const sql = `INSERT INTO input_text (text) VALUES (?)`;
         await pool.query(sql, [text]);
-        res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-
 
         //     // เรียกใช้ไฟล์ Python
         exec("python findword.py", (error, stdout, stderr) => {
@@ -92,8 +87,10 @@ app.post("/api/find_word", async (req, res) => {
             return;
           }
           console.log(`ผลลัพธ์: ${stdout}`);
+          if (stdout) {
+            res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+          }
         });
-
       }
     } else {
       throw new Error("กรุณากรอกข้อความ");
