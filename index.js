@@ -9,13 +9,20 @@ import { exec } from "child_process";
 import Typo from "typo-js";
 
 const app = express();
+
 app.use(cors({
-  origin: 'https://app-text-demo.netlify.app'
+  origin: ['https://app-text-demo.netlify.app', 'http://localhost:5173']
 }));
+
+// app.use(cors({
+//   origin: ['http://localhost:5173'], // สามารถแก้ไขให้เป็นโดเมนของเว็บแอปของคุณได้
+// }));
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const pool = await mysql.createConnection({
+const pool = await mysql.createPool({
   host: "nextsoftwarethailand.com",
   user: "nextsoft_app_text",
   password: "nextsoft1234",
