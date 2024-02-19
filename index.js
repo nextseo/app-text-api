@@ -9,7 +9,9 @@ import { exec } from "child_process";
 import Typo from "typo-js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://app-text-demo.netlify.app'
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
