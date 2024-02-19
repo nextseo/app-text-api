@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const pool =  mysql.createPool({
+const pool = mysql.createPool({
   host: "nextsoftwarethailand.com",
   user: "nextsoft_app_text",
   password: "nextsoft1234",
@@ -43,18 +43,16 @@ app.post("/api/check_text", async (req, res) => {
         await pool.query(sql, [text]);
 
         // เรียกใช้ไฟล์ Python spellcheck
-        // exec("python spellcheck2.py", (error, stdout, stderr) => {
-        //   if (error) {
-        //     console.error(`เกิดข้อผิดพลาด: ${error}`);
-        //     return;
-        //   }
-        //   console.log(`ผลลัพธ์: ${stdout}`);
-        //   if (stdout) {
-        //       res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-        //   }
-        // });
-          res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-
+        exec("python spellcheck2.py", (error, stdout, stderr) => {
+          if (error) {
+            console.error(`เกิดข้อผิดพลาด: ${error}`);
+            return;
+          }
+          console.log(`ผลลัพธ์: ${stdout}`);
+          if (stdout) {
+            res.status(200).json(stdout);
+          }
+        });
       }
     } else {
       throw new Error("กรุณากรอกข้อความ");

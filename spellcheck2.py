@@ -30,22 +30,13 @@ cursor = mydb.cursor()
 cursor.execute(sql_select_Query)
 # get all records
 records = cursor.fetchall()
-# print("Total number of rows in table: ", cursor.rowcount)
-# print("\nPrinting each row")
 for row in records:
-    thai_text = row[1] #set notification
+    thai_text = row[1] 
     
 print('thai_text',thai_text)
     
 #####################
-'''
-# เปิดไฟล์เพื่ออ่าน
-with open('text.txt', 'r', encoding='utf-8') as file:
-    # อ่านข้อมูลทั้งหมดจากไฟล์
-    thai_text = file.read()
-    
-print('thai_text',thai_text)
-'''
+
 import thaispellcheck
 print(thaispellcheck.check(thai_text,autocorrect=True))
 
