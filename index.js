@@ -50,7 +50,7 @@ app.post("/api/check_text", async (req, res) => {
           }
           console.log(`ผลลัพธ์: ${stdout}`);
           if (stdout) {
-            res.status(200).json(stdout);
+            res.status(200).json({message : 'ทำรายการสำเร็จ'});
           }
         });
       }
