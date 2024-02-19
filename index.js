@@ -43,16 +43,17 @@ app.post("/api/check_text", async (req, res) => {
         await pool.query(sql, [text]);
 
         // เรียกใช้ไฟล์ Python spellcheck
-        exec("python spellcheck2.py", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`เกิดข้อผิดพลาด: ${error}`);
-            return;
-          }
-          console.log(`ผลลัพธ์: ${stdout}`);
-          if (stdout) {
-            res.status(200).json({message : 'ทำรายการสำเร็จ'});
-          }
-        });
+        // exec("python spellcheck2.py", (error, stdout, stderr) => {
+        //   if (error) {
+        //     console.error(`เกิดข้อผิดพลาด: ${error}`);
+        //     return;
+        //   }
+        //   console.log(`ผลลัพธ์: ${stdout}`);
+        //   if (stdout) {
+        //     res.status(200).json({message : 'ทำรายการสำเร็จ'});
+        //   }
+        // });
+        res.status(200).json({message : 'ทำรายการสำเร็จ'});
       }
     } else {
       throw new Error("กรุณากรอกข้อความ");
