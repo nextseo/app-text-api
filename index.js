@@ -9,14 +9,7 @@ import { exec } from "child_process";
 import Typo from "typo-js";
 
 const app = express();
-
-// app.use(cors({
-//   origin: ['https://app-text-demo.netlify.app', 'http://localhost:5173']
-// }));
 app.use(cors());
-
-
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -50,16 +43,18 @@ app.post("/api/check_text", async (req, res) => {
         await pool.query(sql, [text]);
 
         // เรียกใช้ไฟล์ Python spellcheck
-        exec("python spellcheck2.py", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`เกิดข้อผิดพลาด: ${error}`);
-            return;
-          }
-          console.log(`ผลลัพธ์: ${stdout}`);
-          if (stdout) {
-              res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
-          }
-        });
+        // exec("python spellcheck2.py", (error, stdout, stderr) => {
+        //   if (error) {
+        //     console.error(`เกิดข้อผิดพลาด: ${error}`);
+        //     return;
+        //   }
+        //   console.log(`ผลลัพธ์: ${stdout}`);
+        //   if (stdout) {
+        //       res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+        //   }
+        // });
+          res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+
       }
     } else {
       throw new Error("กรุณากรอกข้อความ");
