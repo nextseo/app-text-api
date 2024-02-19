@@ -13,14 +13,14 @@ const app = express();
 // app.use(cors({
 //   origin: ['https://app-text-demo.netlify.app', 'http://localhost:5173']
 // }));
-
 app.use(cors());
+
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const pool = await mysql.createPool({
+const pool =  mysql.createPool({
   host: "nextsoftwarethailand.com",
   user: "nextsoft_app_text",
   password: "nextsoft1234",
@@ -57,7 +57,7 @@ app.post("/api/check_text", async (req, res) => {
           }
           console.log(`ผลลัพธ์: ${stdout}`);
           if (stdout) {
-            res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
+              res.status(200).send("บันทึกข้อมูลเรียบร้อยแล้ว");
           }
         });
       }
