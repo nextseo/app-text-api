@@ -10,13 +10,11 @@ import Typo from "typo-js";
 
 const app = express();
 
-app.use(cors({
-  origin: ['https://app-text-demo.netlify.app', 'http://localhost:5173']
-}));
-
 // app.use(cors({
-//   origin: ['http://localhost:5173'], // สามารถแก้ไขให้เป็นโดเมนของเว็บแอปของคุณได้
+//   origin: ['https://app-text-demo.netlify.app', 'http://localhost:5173']
 // }));
+
+app.use(cors());
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
