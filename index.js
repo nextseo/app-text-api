@@ -25,34 +25,37 @@ app.get("/", (rea, res) => {
   res.send("test API V.1");
 });
 
+//  // เรียกใช้ไฟล์ Python spellcheck
+//  exec("python spellcheck2.py", (error, stdout, stderr) => {
+//   if (error) {
+//     console.error(`เกิดข้อผิดพลาด: ${error}`);
+//     return;
+//   }
+//   console.log(`ผลลัพธ์: ${stdout}`);
+//   if (stdout) {
+//     res.status(200).json({message : 'ทำรายการสำเร็จ'});
+//   }
+// });
+
 // POST คำผิด
 app.post("/api/check_text", async (req, res) => {
   try {
     const { text } = req.body;
 
     if (text) {
-      // delete ข้อมูลก่อนหน้า
-      const sqlDelete = `DELETE FROM input_text`;
-      const [resultDelete] = await pool.query(sqlDelete);
+      exec(`python  spellcheck2.py "${text}"`, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          res.status(500).json(error.message);
+          return;
+        }
+        if (stdout) {
+          console.log(stdout);
+          res.status(200).json(stdout.trim());
 
-      // DELETE TABLE propfthai
-      const [resultDelete_2] = await pool.query("DELETE FROM propfthai");
-
-      if (resultDelete_2) {
-        const sql = `INSERT INTO input_text (text) VALUES (?)`;
-        await pool.query(sql, [text]);
-
-        // เรียกใช้ไฟล์ Python spellcheck
-        exec("python spellcheck2.py", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`เกิดข้อผิดพลาด: ${error}`);
-            return;
-          }
-          console.log(`ผลลัพธ์: ${stdout}`);
-                 res.status(200).json({message : 'ทำรายการสำเร็จ'});
-
-        });
-      }
+          // data: "ผมอ้วนมาก\r\n" อยากได้แค่ข้อความ
+        }
+      });
     } else {
       throw new Error("กรุณากรอกข้อความ");
     }
