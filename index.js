@@ -22,7 +22,7 @@ const pool = mysql.createPool({
 });
 
 app.get("/", (rea, res) => {
-  res.send("test API V.1");
+  res.send("test API V.1.1");
 });
 
 //  // เรียกใช้ไฟล์ Python spellcheck
