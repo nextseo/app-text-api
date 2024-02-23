@@ -1,5 +1,4 @@
 from pythainlp import word_tokenize
-import mysql.connector
 import sys
 import io
 import json
