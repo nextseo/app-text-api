@@ -1,1 +1,2 @@
 thaispellcheck
+textblob==0.15.3
