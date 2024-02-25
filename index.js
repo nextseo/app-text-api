@@ -8,13 +8,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-
 app.get("/", (rea, res) => {
   res.send("test API V.2");
 });
-
-
 
 // POST คำผิด
 app.post("/api/check_text", async (req, res) => {
@@ -55,8 +51,18 @@ app.post("/api/find_word", async (req, res) => {
           return;
         }
         if (stdout) {
-          console.log(stdout);
-          res.status(200).json(stdout.trim());
+          // console.log(stdout);
+          const Newdata = JSON.parse(stdout);
+
+          const uniqueData = Newdata.filter(
+            (item, index, self) =>
+              index ===
+              self.findIndex(
+                (t) => t.start === item.start && t.end === item.end
+              )
+          );
+
+          res.status(200).json(uniqueData);
         }
       });
     } else {
@@ -93,7 +99,6 @@ app.post("/api/english", async (req, res) => {
     res.status(500).json(error.message);
   }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
